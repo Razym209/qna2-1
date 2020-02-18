@@ -1,0 +1,14 @@
+h1 Show Question
+
+h2 #{@question.title}
+
+p #{@question.body}
+
+p Answers:
+
+= link_to 'reply', new_question_answer_path(@question)
+
+ul
+  = render @question.answers
+
+= link_to 'Back', questions_path
