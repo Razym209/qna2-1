@@ -15,6 +15,7 @@ RSpec.describe User do
     let!(:user) { create(:user) }
     let!(:user2) { create(:user) }
     let!(:question) { create(:question, author: user) }
+    let!(:another_question) { create(:question, author: user2) }
 
     it "author item" do
       expect(user).to be_author_of(question)
