@@ -25,7 +25,7 @@ feature 'User can delete his own answer' do
     expect(page).to have_content answer.body
   end
 
-  scenario "Unauthenticated user can't delete answer" do
+  scenario "unauthenticated user can't delete answer" do
     visit question_path(question)
 
     expect(page).to have_no_content "Delete"
