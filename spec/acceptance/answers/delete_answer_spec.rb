@@ -1,11 +1,6 @@
 require 'rails_helper'
 
-feature 'User can delete only him questions and answers', %q{
-  In order to delete questions and answers
-  As an authenticated user
-  I want to delete only my questions and answers
-} do
-
+feature 'User can delete his own answer' do
   given(:user1) { create(:user) }
   given(:user2) { create(:user) }
   given(:question) { create(:question, author: user1) }
@@ -24,6 +19,13 @@ feature 'User can delete only him questions and answers', %q{
   scenario 'user2 try to delete user1 answer' do
     sign_in(user2)
 
+    visit question_path(question)
+
+    expect(page).to have_no_content "Delete"
+    expect(page).to have_content answer.body
+  end
+
+  scenario "Unauthenticated user can't delete answer" do
     visit question_path(question)
 
     expect(page).to have_no_content "Delete"
