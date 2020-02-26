@@ -1,4 +1,5 @@
-if resource.present? && resource.errors.any?
+.errors
+- if resource.present? && resource.errors.any?
   h2 Errors:
   ul
   - resource.errors.full_messages.each do |message|
