@@ -22,7 +22,7 @@ RSpec.describe User do
     end
 
     it "another user item" do
-      expect(user).to be_author_of(another_question)
+      expect(user).to_not be_author_of(another_question)
     end
   end
 end
