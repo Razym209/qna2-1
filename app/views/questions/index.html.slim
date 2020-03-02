@@ -1,7 +1,5 @@
-h1 All Questions
+div align="center"
+  = link_to 'Ask question', new_question_path
 
-h2 Questions
-
-= render @questions
-
-= link_to "Ask question", new_question_path(@question)
+.questions
+  = render @questions
