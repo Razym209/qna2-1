@@ -31,7 +31,8 @@ gem 'slim-rails'
 
 gem 'devise'
 gem 'jquery-rails'
-
+gem "aws-sdk-s3", require: false
+gem 'dotenv-rails', groups: [:development, :test]
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

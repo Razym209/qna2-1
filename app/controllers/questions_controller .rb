@@ -37,22 +37,16 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      flash[:notice] = 'you successfully deleted'
-    else
-      flash[:notice] = 'you do not have enough rights'
-    end
-    redirect_to questions_path
+   @question.destroy if current_user&.author_of?(@question)
   end
 
   private
 
   def load_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end
