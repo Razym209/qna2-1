@@ -1,24 +1,16 @@
 FactoryBot.define do
-  sequence :body do |n|
-    "MyTextAnswer#{n}"
-  end
-
   factory :answer do
-    body "MyTextAnswer"
-    question_id 1
-    author
+    sequence :body do |n|
+      "Answer body #{n}"
+    end
+    question
+  end
+  trait :invalid do
+    body { nil }
   end
 
-  factory :invalid_answer, class: "Answer" do
-    body nil
-    question_id nil
-    author
+  trait :with_files do
+    files { [fixture_file_upload("#{Rails.root}/spec/rails_helper.rb"),
+             fixture_file_upload("#{Rails.root}/spec/spec_helper.rb")] }
   end
-
-  factory :generate_answer, class: "Answer" do
-    body { generate(:body) }
-    question_id nil
-    author
-  end
-
 end
