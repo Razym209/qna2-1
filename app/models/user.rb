@@ -1,13 +1,12 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  
+  has_many :questions, dependent: :destroy
+  has_many :answers, dependent: :destroy
+  has_many :rewards, dependent: :destroy
+  
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
-  has_many :questions, foreign_key: "author_id"
-  has_many :answers, foreign_key: "author_id"
-
+         :recoverable, :rememberable, :validatable
   def author_of?(item)
-    self.id == item.author_id
+    item.user_id == id
   end
 end
