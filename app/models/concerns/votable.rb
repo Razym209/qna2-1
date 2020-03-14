@@ -7,7 +7,6 @@ module Votable
   end
 
   def upvote
-    begin
       votes.create(value: 1, user: user)
     rescue ActiveRecord::RecordInvalid
       false
@@ -15,7 +14,6 @@ module Votable
   end
 
   def downvote
-    begin
       votes.create(value: -1, user: user)
     rescue ActiveRecord::RecordInvalid
       false
