@@ -1,4 +1,5 @@
 class Answer < ApplicationRecord
+  include Votable
   
   default_scope { order(best: :desc).order(created_at: :asc) }
   belongs_to :question
