@@ -1,30 +1,48 @@
 require 'rails_helper'
-
-feature 'User sign in', %q{
-  In order to sign in
-  As an User
-  i want to be able to sign up
+feature 'User can sign up', %q{
+  In order to create an account
+  and be able to ask questions
+  and post answers
 } do
 
-  scenario 'Non-registered user try to sign up' do
-    visit new_user_registration_path
-    fill_in 'Email', with: "test@mail.com"
-    fill_in 'Password', with: "11112222"
-    fill_in 'Password confirmation', with: "11112222"
-    click_on 'Sign up'
+  describe 'User tries to sign up' do
+    scenario 'and succseed' do
+      visit new_user_registration_path
+      fill_in 'Email', with: 'new_user@test.com'
+      fill_in 'Password', with: '1234567890'
+      fill_in 'Password confirmation', with: '1234567890'
+      click_on 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
-  end
+      expect(page).to have_content 'A message with a confirmation link has been sent to your email address'
 
-  scenario 'Registered user try to sign in' do
-    User.create(email: "test@mail.com", password: "11112222")
+      open_email('new_user@test.com')
+      current_email.click_link 'Confirm my account'
+      expect(page).to have_content 'Your email address has been successfully confirmed.'
+    end
 
-    visit new_user_registration_path
-    fill_in 'Email', with: "test@mail.com"
-    fill_in 'Password', with: "11112222"
-    fill_in 'Password confirmation', with: "11112222"
-    click_on 'Sign up'
-
-    expect(page).to have_content 'Email has already been taken'
+    scenario 'with no data entered' do
+      visit new_user_registration_path
+      fill_in 'Email', with: ''
+      fill_in 'Password', with: ''
+      fill_in 'Password confirmation', with: ''
+      click_on 'Sign up'
+      expect(page.text).to match /prohibited this (.*) from being saved:/
+    end
+    scenario 'with incorrect password confirmation' do
+      visit new_user_registration_path
+      fill_in 'Email', with: 'new_user@test.com'
+      fill_in 'Password', with: '12345678'
+      fill_in 'Password confirmation', with: '87654321'
+      click_on 'Sign up'
+      expect(page).to have_content "Password confirmation doesn't match Password"
+    end
+    scenario 'with invalid email' do
+      visit new_user_registration_path
+      fill_in 'Email', with: 'invalid_email'
+      fill_in 'Password', with: '12345678'
+      fill_in 'Password confirmation', with: '12345678'
+      click_on 'Sign up'
+      expect(page).to have_content "Sign up"
+    end
   end
 end
