@@ -97,7 +97,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirects to list of questions' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -171,4 +171,5 @@ RSpec.describe QuestionsController, type: :controller do
     let(:user_voter) { create(:user) }
     let!(:votable) { create(:question, user: author) }
   end
+
 end
