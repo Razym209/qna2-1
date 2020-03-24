@@ -27,19 +27,7 @@ class Ability
     can [:upvote, :cancel_vote, :downvote], Votable do |votable|
       !user.author_of?(votable)
     end
-   
-        alias_action :vote_up, :vote_down, to: :vote
-
-    can :vote, [Question, Answer] do |resource|
-      user.not_author_of?(resource)
-    end
-    
-    
-    
-    
-    
-    
-    
+ 
     can :select_best, Answer do |answer|
       user.author_of?(answer.question) && !answer.best
     end
@@ -47,9 +35,7 @@ class Ability
     can :destroy, Link do |link|
       user.author_of?(link.linkable)
     end
-
-    can :destroy, ActiveStorage::Attachment do |file|
-      user.author_of?(file.record)
-    end
+        
+      can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
   end
 end
