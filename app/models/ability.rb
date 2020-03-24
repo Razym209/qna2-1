@@ -24,7 +24,7 @@ class Ability
     can :update, [Question, Answer], user_id: user.id
     can :destroy, [Question, Answer], user_id: user.id
 
-    can [:upvote, :cancel_vote, :downvote], Votable do |votable|
+    can [:upvote, :cancel_vote, :downvote], [Question, Answer] do |votable|
       !user.author_of?(votable)
     end
  
@@ -36,6 +36,7 @@ class Ability
       user.author_of?(link.linkable)
     end
         
-      can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
+    can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
+    end
   end
 end
