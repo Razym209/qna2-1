@@ -21,13 +21,25 @@ class Ability
   def user_abilities
     guest_abilities
     can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer], user: user
-    can :destroy, [Question, Answer], user: user
+    can :update, [Question, Answer], user_id: user
+    can :destroy, [Question, Answer], user_id: user
 
     can [:upvote, :cancel_vote, :downvote], Votable do |votable|
       !user.author_of?(votable)
     end
+   
+        alias_action :vote_up, :vote_down, to: :vote
 
+    can :vote, [Question, Answer] do |resource|
+      user.not_author_of?(resource)
+    end
+    
+    
+    
+    
+    
+    
+    
     can :select_best, Answer do |answer|
       user.author_of?(answer.question) && !answer.best
     end
