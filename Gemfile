@@ -22,6 +22,8 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 gem 'gon'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -43,6 +45,7 @@ gem "cocoon"
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
+gem 'doorkeeper'
 gem 'cancancan'
 
 gem "aws-sdk-s3", require: false

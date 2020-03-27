@@ -1,42 +1,37 @@
 class AnswersController < ApplicationController
-   include Voted
+  include Voted
 
   before_action :authenticate_user!
-  before_action :load_answer, only: %w[edit update destroy]
-  before_action :load_question, only: %w[create]
+  before_action :set_question, only: %i[create]
+  before_action :set_answer, only: %i[update destroy select_best]
 
   after_action :publish_answer, only: :create
-  
+
   authorize_resource
-  
-  def edit
-  end
+
+  def new; end
 
   def create
-    @answer.author = current_user
+    @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     @answer.save
   end
 
-  def update
-    if @answer.update(answer_params)
-      redirect_to @answer.question
-    else
-      render :edit
-    end
+  def destroy
+    @answer.destroy
   end
 
-  def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash[:notice] = 'you successfully deleted'
-    else
-      flash[:notice] = 'you do not have enough rights'
-    end
-    redirect_to question_path(@answer.question)
+  def update
+    @answer.update(answer_params)
+    @question = @answer.question
+  end
+
+  def select_best
+    @answer.select_best
   end
 
   private
-  
+
   def publish_answer
     return if @answer.errors.any?
     ActionCable.server.broadcast(
@@ -45,15 +40,15 @@ class AnswersController < ApplicationController
             partial: 'answers/answer.json',
             locals: { answer: @answer }
           )
-    )
+        )
   end
 
-  def load_answer
-    @answer = Answer.with_attached_files.find(params[:id])
-  end
-
-  def load_question
+  def set_question
     @question = Question.with_attached_files.find(params[:question_id])
+  end
+
+  def set_answer
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def answer_params
