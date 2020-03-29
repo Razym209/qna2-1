@@ -75,5 +75,10 @@ describe Ability, type: :model do
     context 'Profile' do
       it { should be_able_to [:index, :me], User }
     end
+    
+    context 'Subscription' do
+      it { should be_able_to :create, Subscription }
+      it { should_not be_able_to :destroy, create(:subscription, user: other, subscribable: question_other) }
+    end
   end
 end
