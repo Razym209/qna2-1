@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
@@ -166,7 +164,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'selects the best answer' do
         patch :select_best, params: { id: answer2, answer: { best: true } }, format: :js
         answer2.reload
-        expect(answer2.best).to eq true
+        expect(answer2.best).to be_truthy
       end
 
       it 'renders select_best view' do
@@ -180,7 +178,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'selects the best answer' do
         patch :select_best, params: { id: answer, answer: { best: true } }, format: :js
         answer.reload
-        expect(answer.best).to eq true
+        expect(answer.best).to be_truthy
       end
 
       it 'renders select_best view' do
@@ -196,7 +194,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'tries to select the best answer' do
         patch :select_best, params: { id: answer, answer: { best: true } }, format: :js
         answer.reload
-        expect(answer.best).to eq false
+        expect(answer.best).to be_falsey
       end
     end
 
@@ -204,7 +202,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'tries to select the best answer' do
         patch :select_best, params: { id: answer, answer: { best: true } }, format: :js
         answer.reload
-        expect(answer.best).to eq false
+        expect(answer.best).to be_falsey
       end
     end
   end
